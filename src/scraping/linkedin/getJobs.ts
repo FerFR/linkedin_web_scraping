@@ -1,25 +1,6 @@
 import { Page } from 'puppeteer';
 
-export default async function linkedin_jobs(
-    job_url: string,
-    page: Page,
-    logged: boolean = true
-) {
-    if (!logged) {
-        await page.goto(
-            'https://www.linkedin.com/checkpoint/lg/sign-in-another-account'
-        );
-
-        const email = process.env.LINKEDIN_EMAIL!;
-        const password = process.env.LINKEDIN_PASS!;
-        await page.waitForSelector('input#username');
-        await page.type('input#username', email, { delay: 20 });
-        await page.type('input#password', password, { delay: 20 });
-        await page.click(
-            '#organic-div > form > div.login__form_action_container > button'
-        );
-        await page.waitForNavigation();
-    }
+const getJobs = async (job_url: string, page: Page) => {
     await page.goto(job_url);
     const pagination = await page.$('section.jobs-search-two-pane__pagination');
     if (pagination) {
@@ -83,4 +64,5 @@ export default async function linkedin_jobs(
         }
     );
     return allJobs;
-}
+};
+export { getJobs };

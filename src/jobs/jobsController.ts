@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { client } from '../database/client';
-
+import { jobsService } from './jobsService';
 const router = Router();
 
 router.get('/jobs', async (req, res) => {
-    const allJobs = await client.job.findMany({});
+    const allJobs = await jobsService.findAll();
     return res.status(200).json(allJobs);
 });
 
